@@ -1,0 +1,16 @@
+Clearing the Configuration Cache Manually
+Use the following steps to clear the configuration cache manually.
+
+Stop the SharePoint Timer Service.stop_timer_service
+Go to %SystemDrive%\ProgramData\Microsoft\SharePoint\Config folder in File Explorer. The Program Data folder is hidden by default so you may have to unhide it in the File Explorer. As a best practice, I recommend displaying hidden files on all Windows servers.
+There are a couple of folders with the GUID in the Config folder. You want the one that has hyphens in the name.
+Inside this folder you will find lots of files. Your goal is to delete all the files, except the cache.ini. First make a backup of the cache.ini file. You can either copy and paste it in the same folder. The cache – Copy.ini will become your backup file.
+Now that you have a backup of the cache.ini file, you need to delete all the .xml files. The easiest way to find the cache.ini file among thousands of files is to sort the Type column by clicking on the column header.
+Click Ctrl-A to highlight all the files in the folder and then Ctrl-click cache.ini so it is deselected.cache-ini_file
+Delete all the files. This will leave you with only the cache.ini file in this folder. DO NOT delete the folder. Your goal is to rebuild the cache in the same folder that was created by the system.
+Open the cache.ini file. You are probably expecting tons of information in the file but all it has is a 5 or 6-digit number, e.g. 356867. Replace this number with 1 so the only data in the file is the number 1. Now save the file. Changing this number to 1 resets the cache and it will be rebuild after the SharePoint Timer Service is restarted.
+Start the SharePoint Timer Service in the Services Console.start_timer_service
+You will notice that the cache files start to populate the folder. In my case it only took a few seconds but depending on your environment and configuration it may take longer.
+Verify that the value in the cache.ini file is no longer 1. It is likely to be a different 5-6 digit number than it was before.
+Copy this new cache.ini file to something like cache.OLD.ini and rename the original backup (cache – Copy.ini) to cache.NEW.ini. You don’t really need this old file anymore but I like to keep it for a while in an unlikely event that I have some issues with the SharePoint config cache.cache_files
+You have successfully cleared your SharePoint config cache at this point.
